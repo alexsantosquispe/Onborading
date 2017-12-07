@@ -12,11 +12,8 @@ import * as palette from '../Styles';
 import SButton from '../components/SocialButton';
 
 export default class Login extends Component {
-    static navigationOptions = {
-        header: null
-    };
-
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <View style={[styles.mainContainer, {backgroundColor: palette.colors.mainColor}]}>
                 <View style={styles.logoContainer}>
@@ -42,7 +39,7 @@ export default class Login extends Component {
                     <Button
                         color='#00B77A'
                         onPress={() => {
-                            Alert.alert('You tapped this button!')
+                            navigate('Home')
                         }}
                         title="Login"
                     />

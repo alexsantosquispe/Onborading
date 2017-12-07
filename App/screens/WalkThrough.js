@@ -9,9 +9,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from '../components/Swiper';
 
 export default class WalkThrough extends Component {
-    static navigationOptions = {
-        header: null
-    };
     render() {
         const {navigate} = this.props.navigation;
         return (

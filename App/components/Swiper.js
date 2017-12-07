@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
     Dimensions,
-    Alert,
     Platform,
     ScrollView,
     StyleSheet,
@@ -9,59 +8,43 @@ import {
 } from 'react-native';
 import Button from './Button';
 
-const { width, height} = Dimensions.get('window');
-
+const {width, height} = Dimensions.get('window');
 export default class OnBoardingScreens extends Component {
 
     static defaultProps = {
-        // Arrange screens horizontally
         horizontal: true,
-        // Scroll exactly to the next screen, instead of continous scrolling
         pagingEnabled: true,
-        // Hide all scroll indicators
         showsHorizontalScrollIndicator: false,
         showsVerticalScrollIndicator: false,
-        // Do not bounce when the end is reached
         bounces: false,
-        // Do not scroll to top when the status bar is tapped
         scrollsToTop: false,
-        // Remove offscreen child views
         removeClippedSubviews: true,
-        // Do not adjust content behind nav-, tab- or toolbars automatically
-        automaticallyAdjustContentInsets: false,
-        // Fisrt is screen is active
+        automaticallyAdjustContentInsets: true,
         index: 0
     };
-
     state = this.initState(this.props);
 
     /**
      * Initialize the state
      */
     initState(props) {
-
         // Get the total number of slides passed as children
         const total = props.children ? props.children.length || 1 : 0,
-            // Current index
             index = total > 1 ? Math.min(props.index, total - 1) : 0,
-            // Current offset
-            offset = width * index;
-
-        const state = {
-            total,
-            index,
-            offset,
-            width,
-            height,
-        };
-
+            offset = width * index,
+            state = {
+                total,
+                index,
+                offset,
+                width,
+                height,
+            };
         // Component internals as a class property,
         // and not state to avoid component re-renders when updated
         this.internals = {
             isScrolling: false,
             offset
         };
-
         return state;
     }
 
@@ -95,10 +78,10 @@ export default class OnBoardingScreens extends Component {
      * @param {object} e native event
      */
     onScrollEndDrag = e => {
-        const { contentOffset: { x: newOffset } } = e.nativeEvent,
-            { children } = this.props,
-            { index } = this.state,
-            { offset } = this.internals;
+        const {contentOffset: {x: newOffset}} = e.nativeEvent,
+            {children} = this.props,
+            {index} = this.state,
+            {offset} = this.internals;
 
         // Update internal isScrolling state
         // if swiped right on the last slide
@@ -135,6 +118,10 @@ export default class OnBoardingScreens extends Component {
         });
     };
 
+    routeToLogin = () => {
+        this.props.doneEvent();
+    };
+
     /**
      * Swipe one slide forward
      */
@@ -150,7 +137,7 @@ export default class OnBoardingScreens extends Component {
             y = 0;
 
         // Call scrollTo on scrollView component to perform the swipe
-        this.scrollView && this.scrollView.scrollTo({ x, y, animated: true });
+        this.scrollView && this.scrollView.scrollTo({x, y, animated: true});
 
         // Update internal scroll state
         this.internals.isScrolling = true;
@@ -174,9 +161,11 @@ export default class OnBoardingScreens extends Component {
      */
     renderScrollView = pages => {
         return (
-            <ScrollView ref={component => { this.scrollView = component; }}
+            <ScrollView ref={component => {
+                this.scrollView = component;
+            }}
                         {...this.props}
-                        contentContainerStyle={[styles.wrapper, this.props.style]}
+                        contentContainerStyle={[this.props.style]}
                         onScrollBeginDrag={this.onScrollBegin}
                         onMomentumScrollEnd={this.onScrollEnd}
                         onScrollEndDrag={this.onScrollEndDrag}>
@@ -194,32 +183,25 @@ export default class OnBoardingScreens extends Component {
      * Render pagination indicators
      */
     renderPagination = () => {
-        if (this.state.total <= 1) {
-            return null;
-        }
+        let dots = [],
+            key;
+        if (this.state.total >= 2) {
+            const activeDot = <View style={[styles.dot, styles.activeDot]}/>,
+                Dot = <View style={styles.dot}/>;
 
-        const ActiveDot = <View style={[styles.dot, styles.activeDot]} />,
-            Dot = <View style={styles.dot} />;
+            for (key = 0; key < this.state.total; key++) {
+                dots.push(key === this.state.index ?
+                    React.cloneElement(activeDot, {key}) :
+                    React.cloneElement(Dot, {key})
+                );
+            }
 
-        let dots = [];
-
-        for (let key = 0; key < this.state.total; key++) {
-            dots.push(key === this.state.index
-                // Active dot
-                ? React.cloneElement(ActiveDot, { key })
-                // Other dots
-                : React.cloneElement(Dot, { key })
+            return (
+                <View pointerEvents="none" style={[styles.pagination, styles.fullScreen]}>
+                    {dots}
+                </View>
             );
         }
-
-        return (
-            <View
-                pointerEvents="none"
-                style={[styles.pagination, styles.fullScreen]}
-            >
-                {dots}
-            </View>
-        );
     };
 
     /**
@@ -231,8 +213,8 @@ export default class OnBoardingScreens extends Component {
             <View pointerEvents="box-none" style={[styles.buttonWrapper, styles.fullScreen]}>
                 {
                     lastScreen ?
-                    <Button text="Start Now" onPress={() => Alert.alert("123456")} /> :
-                        <Button text="Continue" onPress={() => this.swipe()} />
+                        <Button text="Start Now" onPress={() => this.routeToLogin()}/> :
+                        <Button text="Continue" onPress={() => this.swipe()}/>
                 }
             </View>
         );
@@ -241,7 +223,7 @@ export default class OnBoardingScreens extends Component {
     /**
      * Render the component
      */
-    render = ({ children } = this.props) => {
+    render = ({children} = this.props) => {
         return (
             <View style={[styles.container, styles.fullScreen]}>
                 {this.renderScrollView(children)}
@@ -253,22 +235,17 @@ export default class OnBoardingScreens extends Component {
 }
 
 const styles = StyleSheet.create({
-    // Set width and height to the screen size
     fullScreen: {
         width: width,
         height: height
     },
-    // Main container
     container: {
         backgroundColor: 'transparent',
         position: 'relative'
     },
-    wrapper: {},
-    // Slide
     slide: {
         backgroundColor: 'transparent'
     },
-    // Pagination indicators
     pagination: {
         position: 'absolute',
         bottom: 110,
@@ -280,7 +257,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         backgroundColor: 'transparent'
     },
-    // Pagination dot
     dot: {
         backgroundColor: 'rgba(0,0,0,.25)',
         width: 8,
@@ -291,11 +267,9 @@ const styles = StyleSheet.create({
         marginTop: 3,
         marginBottom: 3
     },
-    // Active dot
     activeDot: {
         backgroundColor: '#FFFFFF',
     },
-    // Button wrapper
     buttonWrapper: {
         backgroundColor: 'transparent',
         flexDirection: 'column',

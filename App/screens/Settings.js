@@ -47,13 +47,6 @@ export default class Login extends Component {
                         title="Login"
                     />
                 </View>
-                <View style={{justifyContent: 'center', flexDirection: 'row', marginBottom: 15, marginTop: 15}}>
-                    <View style={{height: 1, backgroundColor: '#fff', width: 100}}/>
-                    <View style={{width: 40, alignItems: 'center'}}>
-                        <Text style={{margin: -10,color: '#fff'}}>or</Text>
-                    </View>
-                    <View style={{height: 1, backgroundColor: '#fff', width: 100}}/>
-                </View>
                 <View style={styles.fieldContainer}>
                     <SButton
                         text="Sign in with Google"
@@ -74,7 +67,7 @@ export default class Login extends Component {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        padding: 50,
+        padding: 60,
         flex: 1,
         justifyContent: 'center',
     },

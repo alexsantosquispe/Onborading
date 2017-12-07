@@ -1,21 +1,27 @@
 import React, {Component} from 'react';
-import {
-    AppRegistry,
-    StatusBar
-} from 'react-native';
-import Screens from './components/Screens';
+import {AppRegistry, StatusBar} from 'react-native';
+import {StackNavigator} from 'react-navigation';
+import WalkThrough from './screens/WalkThrough';
 import Login from './screens/Login';
+import Settings from './screens/Settings';
+import SideBar from './screens/DrawerLayout';
 
-export default class App extends Component {
+const SimpleApp = StackNavigator({
+    Intro: {screen: WalkThrough},
+    Login: {screen: Login},
+    Settings: {screen: Settings},
+    SideBar: {screen: SideBar}
+});
+export default class App extends Component<{}> {
     componentDidMount() {
         StatusBar.setHidden(true);
     }
 
     render() {
         return (
-            <Screens/>
+            <SimpleApp/>
         );
     }
 }
 
-AppRegistry.registerComponent('App', () => App);
+AppRegistry.registerComponent('SimpleApp', () => SimpleApp);

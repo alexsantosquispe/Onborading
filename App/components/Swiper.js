@@ -224,7 +224,6 @@ export default class OnBoardingScreens extends Component {
      * Render the component
      */
     render = ({children} = this.props) => {
-        debugger;
         return (
             <View style={[styles.container, styles.fullScreen]}>
                 {this.renderScrollView(children)}

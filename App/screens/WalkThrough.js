@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    StatusBar,
     StyleSheet,
     Text,
     View
@@ -9,6 +10,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from '../components/Swiper';
 
 export default class WalkThrough extends Component {
+    componentDidMount() {
+        StatusBar.setHidden(true);
+    }
     render() {
         const {navigate} = this.props.navigation;
         return (

@@ -6,12 +6,15 @@ import {
     TextInput,
     Text,
     Button,
-    View
+    View, StatusBar
 } from 'react-native';
 import * as palette from '../Styles';
 import SButton from '../components/SocialButton';
 
 export default class Login extends Component {
+    componentDidMount() {
+        StatusBar.setHidden(true);
+    }
     render() {
         const {navigate} = this.props.navigation;
         return (
@@ -39,7 +42,7 @@ export default class Login extends Component {
                     <Button
                         color='#00B77A'
                         onPress={() => {
-                            navigate('Home')
+                            navigate('DrawerMenu')
                         }}
                         title="Login"
                     />

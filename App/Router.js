@@ -1,5 +1,5 @@
 import {DrawerNavigator} from 'react-navigation';
-import SideBar from './screens/SideMenu';
+import SideBar from './screens/SideBarMenu';
 import Inbox from './screens/options/inbox';
 import Draft from './screens/options/draft';
 import Unassigned from './screens/options/unassigned';

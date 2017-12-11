@@ -12,9 +12,6 @@ import * as palette from '../Styles';
 import SButton from '../components/SocialButton';
 
 export default class Login extends Component {
-    componentDidMount() {
-        StatusBar.setHidden(true);
-    }
     render() {
         const {navigate} = this.props.navigation;
         return (

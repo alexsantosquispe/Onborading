@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
         paddingTop: 4,
     },
     header: {
-        height: 120,
+        height: 160,
         backgroundColor: '#eee'
     },
     itemContainer: {
         paddingLeft: 14,
-        paddingBottom: 10,
-        paddingTop: 10
+        paddingBottom: 14,
+        paddingTop: 14
     },
     item: {
         color: '#000',
